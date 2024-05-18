@@ -88,6 +88,9 @@ const particlesMaterial = new THREE.ShaderMaterial({
                 sizes.height * sizes.pixelRatio
             )
         ),
+        uPictureTexture: new THREE.Uniform(
+            textureLoader.load("./picture-4.png")
+        ),
     },
 });
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
