@@ -73,6 +73,51 @@ renderer.setClearColor("#181818");
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(sizes.pixelRatio);
 
+// Displacement
+const displacement = {};
+
+// 2D Canvas
+displacement.canvas = document.createElement('canvas')
+displacement.canvas.width = 128
+displacement.canvas.height = 128
+displacement.canvas.style.position = 'fixed';
+displacement.canvas.style.width = '256px';
+displacement.canvas.style.height = '256px'
+displacement.canvas.style.top = '0px'
+displacement.canvas.style.left = '0px'
+displacement.canvas.style.zIndex = '10px'
+document.body.append(displacement.canvas);
+
+// Context
+displacement.context = displacement.canvas.getContext('2d');
+// displacement.context.fillStyle = 'red'; how to change 2d canvas color
+displacement.context.fillRect(0, 0, displacement.canvas.width, displacement.canvas.height);
+
+// Glow image
+displacement.glowImage = new Image();
+displacement.glowImage.src = './glow.png';
+// displacement.context.drawImage(displacement.glowImage, 20, 20, 32, 32); needs to be put in a settimeout with a delay of 1 second to be drawn on the canvas
+
+// Interactive plane
+displacement.interactivePlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(10, 10),
+    new THREE.MeshBasicMaterial({color: 'red'})
+);
+scene.add(displacement.interactivePlane)
+
+// Raycaster
+displacement.raycaster = new THREE.Raycaster()
+
+// Coordinates
+displacement.screenCursor = new THREE.Vector2(9999, 9999);
+
+window.addEventListener('pointermove', (e) => {
+    // Pointer move works on mobile too, that's why we chose it over mouse move
+
+    displacement.screenCursor.x = (e.clientX / sizes.width) * 2 - 1
+    displacement.screenCursor.x = (e.clientY / sizes.width) * 2 - 1
+})
+
 /**
  * Particles
  */
