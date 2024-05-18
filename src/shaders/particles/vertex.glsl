@@ -19,5 +19,5 @@ void main()
     gl_PointSize *= (1.0 / - viewPosition.z);
 
     // Varyings
-    vColor = vec3(pictureIntensity);
+    vColor = vec3(pow(pictureIntensity, 2.0));
 }
