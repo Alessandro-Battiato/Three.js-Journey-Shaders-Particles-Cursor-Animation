@@ -1,6 +1,8 @@
 uniform vec2 uResolution;
 uniform sampler2D uPictureTexture;
 
+varying vec3 vColor;
+
 void main()
 {
     // Final position
@@ -15,4 +17,7 @@ void main()
     // Point size
     gl_PointSize = 0.3 * pictureIntensity * uResolution.y;
     gl_PointSize *= (1.0 / - viewPosition.z);
+
+    // Varyings
+    vColor = vec3(pictureIntensity);
 }
