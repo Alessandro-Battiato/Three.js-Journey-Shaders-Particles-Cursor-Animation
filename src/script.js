@@ -153,6 +153,14 @@ const tick = () => {
     // Update controls
     controls.update();
 
+    /**
+     * Raycaster
+     */
+    displacement.raycaster.setFromCamera(displacement.screenCursor, camera);
+    const intersections = displacement.raycaster.intersectObject(
+        displacement.interactivePlane
+    );
+
     // Render
     renderer.render(scene, camera);
 
