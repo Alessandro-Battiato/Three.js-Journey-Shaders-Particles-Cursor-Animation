@@ -115,6 +115,7 @@ displacement.raycaster = new THREE.Raycaster();
 
 // Coordinates
 displacement.screenCursor = new THREE.Vector2(9999, 9999);
+displacement.canvasCursor = new THREE.Vector2(9999, 9999);
 
 window.addEventListener("pointermove", (e) => {
     // Pointer move works on mobile too, that's why we chose it over mouse move
@@ -159,6 +160,27 @@ const tick = () => {
     displacement.raycaster.setFromCamera(displacement.screenCursor, camera);
     const intersections = displacement.raycaster.intersectObject(
         displacement.interactivePlane
+    );
+
+    if (intersections.length) {
+        const uv = intersections[0].uv; // returns object with the x and y
+
+        displacement.canvasCursor.x = uv.x * displacement.canvas.width;
+        displacement.canvasCursor.y = (1 - uv.y) * displacement.canvas.height;
+    }
+
+    /**
+     * Displacement
+     */
+    // Draw glow
+    const glowSize = displacement.canvas.width * 0.25;
+    displacement.context.globalCompositeOperation = "lighten";
+    displacement.context.drawImage(
+        displacement.glowImage,
+        displacement.canvasCursor.x - glowSize * 0.5,
+        displacement.canvasCursor.y - glowSize * 0.5,
+        32,
+        32
     );
 
     // Render
