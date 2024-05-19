@@ -108,6 +108,7 @@ displacement.interactivePlane = new THREE.Mesh(
     new THREE.PlaneGeometry(10, 10),
     new THREE.MeshBasicMaterial({ color: "red" })
 );
+displacement.interactivePlane.visible = false;
 scene.add(displacement.interactivePlane);
 
 // Raycaster
@@ -123,6 +124,9 @@ window.addEventListener("pointermove", (e) => {
     displacement.screenCursor.x = (e.clientX / sizes.width) * 2 - 1;
     displacement.screenCursor.x = -(e.clientY / sizes.height) * 2 + 1;
 });
+
+// Texture
+displacement.texture = new THREE.CanvasTexture(displacement.canvas);
 
 /**
  * Particles
@@ -142,6 +146,7 @@ const particlesMaterial = new THREE.ShaderMaterial({
         uPictureTexture: new THREE.Uniform(
             textureLoader.load("./picture-4.png")
         ),
+        uDisplacementTexture: new THREE.Uniform(displacement.texture),
     },
 });
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -172,16 +177,29 @@ const tick = () => {
     /**
      * Displacement
      */
+    displacement.context.globalCompositeOperation = "source-over";
+    displacement.context.globalAlpha = 0.02;
+    displacement.context.fillRect(
+        0,
+        0,
+        displacement.canvas.width,
+        displacement.canvas.height
+    );
+
     // Draw glow
     const glowSize = displacement.canvas.width * 0.25;
     displacement.context.globalCompositeOperation = "lighten";
+    displacement.context.globalAlpha = 1;
     displacement.context.drawImage(
         displacement.glowImage,
         displacement.canvasCursor.x - glowSize * 0.5,
         displacement.canvasCursor.y - glowSize * 0.5,
-        32,
-        32
+        glowSize,
+        glowSize
     );
+
+    // Texture
+    displacement.texture.needsUpdate = true;
 
     // Render
     renderer.render(scene, camera);
