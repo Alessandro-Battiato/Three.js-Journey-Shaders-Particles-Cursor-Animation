@@ -136,14 +136,22 @@ const particlesGeometry = new THREE.PlaneGeometry(10, 10, 128, 128);
 const intensitesArray = new Float32Array(
     particlesGeometry.attributes.position.count
 );
+const anglesArray = new Float32Array(
+    particlesGeometry.attributes.position.count
+);
 
 for (let i = 0; i < particlesGeometry.attributes.position.count; i++) {
     intensitesArray[i] = Math.random();
+    anglesArray[i] = Math.random() * Math.PI * 2; // full circle
 }
 
 particlesGeometry.setAttribute(
     "aIntensity",
     new THREE.BufferAttribute(intensitesArray, 1)
+);
+particlesGeometry.setAttribute(
+    "aAngle",
+    new THREE.BufferAttribute(anglesArray, 1)
 );
 
 const particlesMaterial = new THREE.ShaderMaterial({
