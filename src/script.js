@@ -86,7 +86,7 @@ displacement.canvas.style.height = "256px";
 displacement.canvas.style.top = "0px";
 displacement.canvas.style.left = "0px";
 displacement.canvas.style.zIndex = "10px";
-document.body.append(displacement.canvas);
+// document.body.append(displacement.canvas); no longer needed after project delivery
 
 // Context
 displacement.context = displacement.canvas.getContext("2d");
