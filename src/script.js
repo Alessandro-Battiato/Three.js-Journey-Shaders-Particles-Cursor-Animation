@@ -122,7 +122,7 @@ window.addEventListener("pointermove", (e) => {
     // Pointer move works on mobile too, that's why we chose it over mouse move
 
     displacement.screenCursor.x = (e.clientX / sizes.width) * 2 - 1;
-    displacement.screenCursor.x = -(e.clientY / sizes.height) * 2 + 1;
+    displacement.screenCursor.y = -(e.clientY / sizes.height) * 2 + 1;
 });
 
 // Texture
