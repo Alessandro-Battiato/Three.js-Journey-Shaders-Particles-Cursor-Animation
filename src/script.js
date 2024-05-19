@@ -117,6 +117,7 @@ displacement.raycaster = new THREE.Raycaster();
 // Coordinates
 displacement.screenCursor = new THREE.Vector2(9999, 9999);
 displacement.canvasCursor = new THREE.Vector2(9999, 9999);
+displacement.canvasCursorPrevious = new THREE.Vector2(9999, 9999);
 
 window.addEventListener("pointermove", (e) => {
     // Pointer move works on mobile too, that's why we chose it over mouse move
@@ -209,10 +210,17 @@ const tick = () => {
         displacement.canvas.height
     );
 
+    // Speed alpha
+    const cursorDistance = displacement.canvasCursorPrevious.distanceTo(
+        displacement.canvasCursor
+    );
+    displacement.canvasCursorPrevious.copy(displacement.canvasCursor);
+    const alpha = Math.min(cursorDistance * 0.1, 1);
+
     // Draw glow
     const glowSize = displacement.canvas.width * 0.25;
     displacement.context.globalCompositeOperation = "lighten";
-    displacement.context.globalAlpha = 1;
+    displacement.context.globalAlpha = alpha;
     displacement.context.drawImage(
         displacement.glowImage,
         displacement.canvasCursor.x - glowSize * 0.5,
